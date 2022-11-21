@@ -8,6 +8,8 @@ const http = require('http').Server(app);
 
 const io = require('socket.io')(http);
 
+const mongoose = require('mongoose')
+
 app.use(express.static(__dirname))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
@@ -28,9 +30,15 @@ app.post('/messages', (req, res) => {
 })
 
 io.on('connection', (socket) => {
-    console.log('user connected');
+    mongoose.connect(`mongodb+srv://sibu_auth:carnoskylalabi@cluster0.l0zes.mongodb.net/auth_system?retryWrites=true&w=majority`)
+    .then(() => {
+        console.log('connected');
+    }).catch((e) => {
+        console.log(e);
+    })
 })
 
 var server = http.listen(3000, () => {
     console.log('server is running on port ' + server.address().port);
 }) 
+
